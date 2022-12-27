@@ -11,4 +11,5 @@ public interface UsersService {
     void saveUser(Users user);
     Users updateUsers(Long id, Users user);
     void deleteUsers(Long id);
+    String testAuthentication();
 }
