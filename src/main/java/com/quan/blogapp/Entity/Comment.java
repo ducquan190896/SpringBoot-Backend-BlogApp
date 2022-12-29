@@ -42,18 +42,19 @@ public class Comment {
     @Column(name = "likecount", nullable = false)
     private Integer likecount;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE})
+    // @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     private Users commentOwner;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE})
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
 
     @JsonIgnore
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REMOVE})
+    @ManyToMany
     @JoinTable(
         name = "comment_likes",
         joinColumns = {@JoinColumn(name = "comment_id", referencedColumnName = "id")},
@@ -70,6 +71,10 @@ public class Comment {
     )
     private List<Tag> tagList = new ArrayList<>();
 
+    // @JsonIgnore
+    // @OneToMany(mappedBy = "commentNotify", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    // private List<Notification> listnotification = new ArrayList<>();
+
 
     public Comment( String content, Users commentOwner, Post post) {
         this.content = content;
@@ -83,6 +88,7 @@ public class Comment {
         this.likecount = 0;
       
     }
+    
     @Override
     public int hashCode() {
        return Objects.hash(this.id);
@@ -106,10 +112,12 @@ public class Comment {
     public void likeComment(Users user) {
         this.commentlikes.add(user);
         this.setLikecount(this.likecount + 1);
+        user.getCommentliked().add(this);
     }
     public void removeLikeComment(Users user) {
       this.commentlikes =  this.commentlikes.stream().filter(us -> us.getId() != user.getId()).collect(Collectors.toList());
       this.setLikecount(this.likecount - 1);
+      user.getCommentliked().remove(this);
 
     }
 

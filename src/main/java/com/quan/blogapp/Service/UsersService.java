@@ -12,4 +12,9 @@ public interface UsersService {
     Users updateUsers(Long id, Users user);
     void deleteUsers(Long id);
     String testAuthentication();
+    void followingUser(Long followingUserId);
+    void unfollowUser(Long followingUserId);
+    List<Users> getFollowingUsers();
+    List<Users> getFollowedByUsers();
+
 }

@@ -35,13 +35,13 @@ public class SecurityConfig {
 
         http.csrf().disable()
         .authorizeRequests()
-        // .antMatchers(HttpMethod.POST, "/**/register").permitAll()
+        .antMatchers(HttpMethod.POST, "/**/register").permitAll()
         .anyRequest().permitAll()
         .and()
-        // .authenticationProvider(authenticationProvider())
-        // .addFilterBefore(new FilterException(), filterAuthentication.getClass())
-        // .addFilter(filterAuthentication)
-        // .addFilterAfter(new FilterJwtAuthorization(), filterAuthentication.getClass())
+        .authenticationProvider(authenticationProvider())
+        .addFilterBefore(new FilterException(), filterAuthentication.getClass())
+        .addFilter(filterAuthentication)
+        .addFilterAfter(new FilterJwtAuthorization(), filterAuthentication.getClass())
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         
         return http.build();
