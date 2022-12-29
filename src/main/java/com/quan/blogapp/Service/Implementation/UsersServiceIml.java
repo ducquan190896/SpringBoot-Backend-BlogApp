@@ -28,6 +28,48 @@ public class UsersServiceIml implements UsersService, UserDetailsService {
     UsersRepos usersRepos;
 
     @Override
+    public void followingUser(Long followingUserId) {
+       String username = SecurityContextHolder.getContext().getAuthentication().getName();
+       Users authUser = getUsersByName(username);
+       Users userfollowing = getUser(followingUserId);
+       if(!authUser.equals(userfollowing)) {
+        authUser.getFollowings().add(userfollowing);
+        userfollowing.getFollowedsBy().add(authUser);
+        usersRepos.save(authUser);
+        usersRepos.save(userfollowing);
+       }
+        
+    }
+
+    @Override
+    public List<Users> getFollowedByUsers() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Users authUser = getUsersByName(username);
+        return authUser.getFollowedsBy();
+    }
+
+    @Override
+    public List<Users> getFollowingUsers() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Users authUser = getUsersByName(username);
+        return authUser.getFollowings();
+    }
+
+    @Override
+    public void unfollowUser(Long followingUserId) {
+       String username = SecurityContextHolder.getContext().getAuthentication().getName();
+       Users authUser = getUsersByName(username);
+       Users user = getUser(followingUserId);
+       if(!authUser.equals(user)) {
+        authUser.getFollowings().remove(user);
+        user.getFollowedsBy().remove(authUser);
+        usersRepos.save(authUser);
+        usersRepos.save(user);
+       }
+        
+    }
+
+    @Override
     public void deleteUsers(Long id) {
         Optional<Users> entity = usersRepos.findById(id);
         Users user = isCheck(entity, id);

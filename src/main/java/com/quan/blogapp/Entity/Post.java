@@ -1,10 +1,8 @@
 package com.quan.blogapp.Entity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -21,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
@@ -67,12 +64,13 @@ public class Post {
     @Column(name = "likecount", nullable = false)
     private Integer likecount;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE})
+   
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "postowner_id", referencedColumnName = "id")
     private Users postOwner;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch =  FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
     // @OneToMany
     private List<Comment> comments = new ArrayList<>();
 
@@ -95,12 +93,24 @@ public class Post {
     )
     private List<Tag> tagList = new ArrayList<>();
 
+    // @JsonIgnore
+    // @OneToMany(mappedBy = "postNotify", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    // private List<Notification> listnotification = new ArrayList<>();
+
     public Post( String content, String imageurl, Users postOwner) {
         this.content = content;
         this.imageurl = imageurl;
         this.postOwner = postOwner;
         this.likecount = 0;
         this.commentcount = 0;
+    }
+    public Post( String content, String imageurl, Users postOwner, List<Tag> tags) {
+        this.content = content;
+        this.imageurl = imageurl;
+        this.postOwner = postOwner;
+        this.likecount = 0;
+        this.commentcount = 0;
+        this.tagList = tags;
     }
  
 
@@ -114,6 +124,7 @@ public class Post {
     public void likePost(Users user) {
         this.likelist.add(user);
         this.likecount = this.likecount +1;
+        user.getPostliked().add(this);
        
     }
     public void removeLikePost(Users user) {
@@ -134,7 +145,7 @@ public class Post {
     public void deleteComment(Comment comment) {
       this.comments =  this.comments.stream().filter(comm -> comm.getId() != comment.getId()).collect(Collectors.toList());
     this.commentcount = this.commentcount - 1;
-
+        comment.setPost(null);
     }
 
     public void addTagToPost(Tag tag) {
@@ -169,11 +180,12 @@ public class Post {
        
         return Objects.equals(id, post.getId()) && Objects.equals(postOwner, post.getPostOwner());
     }
-
     @Override
     public String toString() {
-        return "Post [id=" + id + ", content=" + content + ", imageurl=" + imageurl + "]";
+        return "Post [id=" + id + ", content=" + content + ", imageurl=" + imageurl + ", commentcount=" + commentcount
+                + ", likecount=" + likecount + ", postOwner=" + postOwner + ", tagList=" + tagList + "]";
     }
+    
     
     
 }

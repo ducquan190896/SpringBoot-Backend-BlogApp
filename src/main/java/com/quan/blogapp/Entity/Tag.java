@@ -40,7 +40,7 @@ public class Tag {
     private Integer tagcounter;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "tagList", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "tagList", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE})
     private List<Post> postList = new ArrayList<>();
 
     @JsonIgnore

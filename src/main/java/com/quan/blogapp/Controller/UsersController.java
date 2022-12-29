@@ -3,6 +3,7 @@ package com.quan.blogapp.Controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,5 +61,23 @@ public class UsersController {
             return new ResponseEntity<String>(usersService.testAuthentication(), HttpStatus.OK);
 
 
+    } 
+
+
+    @PutMapping("/followingUser/{userId}") 
+    public ResponseEntity<HttpStatus> followingUser(@PathVariable Long userId) {
+        usersService.followingUser(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @GetMapping("/getfollowings")
+    public ResponseEntity<List<Users>> getFollowings() {
+        return new ResponseEntity<List<Users>>(usersService.getFollowingUsers(), HttpStatus.OK);
+    }
+
+    @GetMapping("/getfolloweds")
+    public ResponseEntity<List<Users>> getFolloweds() {
+        return new ResponseEntity<List<Users>>(usersService.getFollowedByUsers(), HttpStatus.OK);
     } 
 }
