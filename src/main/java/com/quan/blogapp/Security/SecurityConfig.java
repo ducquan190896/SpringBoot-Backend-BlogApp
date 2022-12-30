@@ -36,7 +36,7 @@ public class SecurityConfig {
         http.csrf().disable()
         .authorizeRequests()
         .antMatchers(HttpMethod.POST, "/**/register").permitAll()
-        .anyRequest().permitAll()
+        .anyRequest().authenticated()
         .and()
         .authenticationProvider(authenticationProvider())
         .addFilterBefore(new FilterException(), filterAuthentication.getClass())
