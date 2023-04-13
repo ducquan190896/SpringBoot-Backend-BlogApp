@@ -32,44 +32,44 @@ public class BlogAppApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(UsersRepos usersRepos, PostRepos postRepos, CommentRepos commentRepos, TagRepos tagRepos, NotificationRepos notificationRepos) {
 		return args -> {
-		Users admin = new Users("quan", new BCryptPasswordEncoder().encode("123456"), Role.ADMIN);
-		Users user1 = new Users("quanUser",  new BCryptPasswordEncoder().encode("123456"), Role.USER);
-		Users user2 = new Users("khanh",  new BCryptPasswordEncoder().encode("123456"), Role.USER);
-		usersRepos.save(admin);
-		usersRepos.save(user1);
-		usersRepos.save(user2);
-
-		// user2.setUsername("khanh khung");
+		// Users admin = new Users("quan", new BCryptPasswordEncoder().encode("123456"), Role.ADMIN);
+		// Users user1 = new Users("quanUser",  new BCryptPasswordEncoder().encode("123456"), Role.USER);
+		// Users user2 = new Users("khanh",  new BCryptPasswordEncoder().encode("123456"), Role.USER);
+		// usersRepos.save(admin);
+		// usersRepos.save(user1);
 		// usersRepos.save(user2);
+
+		// // user2.setUsername("khanh khung");
+		// // usersRepos.save(user2);
 	
 
-		Post post1 = new Post("hello post", "jlkasjdf.png", user1);
-		postRepos.save(post1);
+		// Post post1 = new Post("hello post", "jlkasjdf.png", user1);
+		// postRepos.save(post1);
 
 		
 		 
-		// post1.likePost(admin);
-		// post1.likePost(user2);
-		Notification notify1 = new Notification(NotificationType.PostLike, user1, user2, post1);
+		// // post1.likePost(admin);
+		// // post1.likePost(user2);
+		// Notification notify1 = new Notification(NotificationType.PostLike, user1, user2, post1);
 		
-		notificationRepos.save(notify1);
-		 postRepos.save(post1);
+		// notificationRepos.save(notify1);
+		//  postRepos.save(post1);
 
-		 user1.getFollowedsBy().add(user2);
-		 user2.getFollowings().add(user1);
-		 user2.getFollowings().add(admin);
-		 admin.getFollowedsBy().add(user2);
-		 usersRepos.save(admin);
-		 usersRepos.save(user1);
-		 usersRepos.save(user2);
+		//  user1.getFollowedsBy().add(user2);
+		//  user2.getFollowings().add(user1);
+		//  user2.getFollowings().add(admin);
+		//  admin.getFollowedsBy().add(user2);
+		//  usersRepos.save(admin);
+		//  usersRepos.save(user1);
+		//  usersRepos.save(user2);
 
 
 
-		Comment comment1 = new Comment("hello comment 1", user1);
-		// commentRepos.save(comment1);
+		// Comment comment1 = new Comment("hello comment 1", user1);
+		// // commentRepos.save(comment1);
 			
-		post1.addComment(comment1);
-		postRepos.save(post1);
+		// post1.addComment(comment1);
+		// postRepos.save(post1);
 		
 			
 		// post1.removeLikePost(user2);
