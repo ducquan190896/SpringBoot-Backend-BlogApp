@@ -33,4 +33,4 @@ build/
 .vscode/
 
 personalInfor/
-!**/src/main/resources
+src/main/resources/application.properties
